@@ -1,0 +1,51 @@
+body {
+     margin: 0;
+     padding: 0;
+     background-image: url('https://images.ctfassets.net/s5n2t79q9icq/24swm5ulha7zsVsgIXKdgU/8c84f2f15888f9eea3266dbdfabd3286/Wallpaper_1920x1080_The_Ur-Dragon.png');
+     background-repeat: no-repeat;
+     background-size: cover;
+     background-position: center;
+     background-attachment: fixed;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     height: 100vh; /* Ensure the body takes the full height of the viewport */
+}
+
+.container {
+  background-color: #EAF3F9; /* Set the background color to white */
+  padding: 80px; /* Add some padding for spacing */
+  border-radius: 5px; /* Add rounded corners to the container */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow for a 3D effect */
+}
+
+/* Styles for the form elements */
+.form-group {
+  width: 100%;
+  margin-bottom: 10px; /* Add desired space between form elements */
+}
+
+/* Styles for the email and password input boxes */
+#email,
+#password {
+  width: 100%;
+  border: none; /* Remove the default border */
+  border-bottom: 1px solid black; /* Add a bottom border */
+  background-color: transparent; /* Make the background transparent */
+  padding: 5px 0; /* Adjust the padding as needed */
+}
+
+/* Styles for the submit button */
+button.btn-primary {
+  width: 100%;
+  height: 40px; /* Adjust the height to match the input boxes */
+  background-color: black; /* Set the background color to black */
+  color: white; /* Set the text color to white */
+  margin-top: 10px; /* Add margin to create space */
+}
+
+.container h2 {
+  text-align: center; /* Center align the text */
+  margin-top: 0; /* Remove default margin */
+}
+
