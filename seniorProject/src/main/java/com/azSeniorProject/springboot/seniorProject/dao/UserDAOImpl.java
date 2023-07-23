@@ -2,6 +2,8 @@ package com.azSeniorProject.springboot.seniorProject.dao;
 
 import com.azSeniorProject.springboot.seniorProject.entity.User;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,5 +45,21 @@ public class UserDAOImpl implements UserDAO {
 
         int numRowsDeleted = entityManager.createQuery("DELETE FROM User").executeUpdate();
         return numRowsDeleted;
+    }
+
+    @Override
+    @Transactional
+    public User findByEmail(String email) {
+        // Create a TypedQuery using JPA to fetch the user with the given email from the database
+        TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
+        query.setParameter("email", email);
+
+        try {
+            // Attempt to get a single result from the query
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            // If no result is found, return null
+            return null;
+        }
     }
 }

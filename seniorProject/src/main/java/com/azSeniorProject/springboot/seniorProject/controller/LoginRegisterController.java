@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class LoginRegisterController {
@@ -22,10 +23,24 @@ public class LoginRegisterController {
 
     // create mapping for login/main page
 
-    @GetMapping("/main")
-    public String mainPage() {
+    @GetMapping("/login")
+    public String loginPage() {
         return "loginPage";
 
+    }
+    @PostMapping("/submit_login")
+    public String submitLogin(@RequestParam("email") String email, @RequestParam("password") String password) {
+        // Use the UserDAO to retrieve the user with the matching email from the database
+        User theUser = userDAO.findByEmail(email);
+
+        // Check if the user exists and if the password matches
+        if (theUser != null && theUser.getPassword().equals(password)) {
+            // User is authenticated, redirect to the dashboard or any other page
+            return "service";
+        } else {
+            // Invalid credentials, redirect back to the login page with an error message
+            return "redirect:/login?error";
+        }
     }
 
     // registration page
@@ -49,6 +64,8 @@ public class LoginRegisterController {
         // Redirect to a success page or any other page after successful registration
         return "registrationSuccessPage";
     }
+
+
 
 
 }

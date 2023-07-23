@@ -11,7 +11,7 @@
     <div class="row justify-content-center mt-5">
         <div class="col-md-6">
             <h2>Login</h2>
-            <form th:action="@{/login}" method="post">
+            <form th:action="@{/submit_login}" method="post">
                 <div class="form-group">
                     <input type="email" class="form-control" id="email" placeholder="EMAIL" name="email">
                 </div>
@@ -32,6 +32,8 @@
                     <p>Don't have an account? <a href="/registration">Create an Account</a></p>
                 </div>
             </form>
+            <!-- Display login errors -->
+            <div th:if="${param.error}" class="error-message" style="color: red;">Invalid email or password</div>
         </div>
     </div>
 </div>

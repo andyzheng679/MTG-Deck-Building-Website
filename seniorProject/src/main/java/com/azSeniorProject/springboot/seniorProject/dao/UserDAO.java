@@ -9,4 +9,6 @@ public interface UserDAO {
     void delete(Integer id);
 
     int deleteAll();
+
+    User findByEmail(String email);
 }
