@@ -1,0 +1,106 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    width: 450px;
+    padding: 60px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="text"],
+input[type="email"] {
+    width: 100%;
+}
+
+/* Use flexbox for the password input and toggle */
+.password-input {
+    display: flex;
+    align-items: center;
+}
+
+.toggle-password {
+    position: relative;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.checkmark {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Style the checkmark as a square */
+.toggle-password input[type="checkbox"] {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-password .checkmark::after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid black;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.toggle-password input[type="checkbox"]:checked ~ .checkmark::after {
+    display: block;
+}
+
+input[type="password"] {
+    padding-right: 40px; /* Leave space for the toggle */
+}
+
+input[type="submit"] {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+
+/* Add hover effect to the submit button */
+input[type="submit"]:hover {
+    background-color: #45a049;
+}

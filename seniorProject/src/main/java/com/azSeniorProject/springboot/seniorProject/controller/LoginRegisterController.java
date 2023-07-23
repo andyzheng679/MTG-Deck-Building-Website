@@ -10,11 +10,14 @@ public class LoginRegisterController {
     // create mapping for login/main page
 
     @GetMapping("/main")
-    public String testing(Model theModel) {
-
-        theModel.addAttribute("theDate", new java.util.Date());
-
+    public String mainPage() {
         return "loginPage";
+
+    }
+
+    @GetMapping("/registration")
+    public String registrationPage() {
+        return "registerPage";
 
     }
 
