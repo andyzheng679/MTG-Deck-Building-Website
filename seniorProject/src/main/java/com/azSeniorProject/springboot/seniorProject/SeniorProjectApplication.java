@@ -6,28 +6,31 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
+@ComponentScan(basePackages = "com.azSeniorProject.springboot.seniorProject")
 public class SeniorProjectApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SeniorProjectApplication.class, args);
 	}
 
-
+	/*
 	@Bean
 	public CommandLineRunner commandLineRunner(UserDAO userDAO) {
 
 		return runner -> {
 			//createUser(userDAO);
 
-			//deleteUser(userDAO);
+			deleteUser(userDAO);
 
 			//deleteAllUsers(userDAO);
 
 
 		};
 	}
+	*/
 
 	private void deleteAllUsers(UserDAO userDAO) {
 
@@ -38,7 +41,7 @@ public class SeniorProjectApplication {
 
 	private void deleteUser(UserDAO userDAO) {
 
-		int userID = 4;
+		int userID = 5;
 		System.out.println("Deleting student id: " + userID);
 		userDAO.delete(userID);
 	}
