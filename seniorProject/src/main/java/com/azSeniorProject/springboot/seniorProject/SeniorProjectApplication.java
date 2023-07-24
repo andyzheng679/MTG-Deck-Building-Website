@@ -16,25 +16,25 @@ public class SeniorProjectApplication {
 		SpringApplication.run(SeniorProjectApplication.class, args);
 	}
 
-	/*
+/*
 	@Bean
 	public CommandLineRunner commandLineRunner(UserDAO userDAO) {
 
 		return runner -> {
 			//createUser(userDAO);
 
-			deleteUser(userDAO);
+			//deleteUser(userDAO);
 
-			//deleteAllUsers(userDAO);
+			deleteAllUsers(userDAO);
 
 
 		};
 	}
-	*/
+*/
 
 	private void deleteAllUsers(UserDAO userDAO) {
 
-		System.out.println("Deleting all students");
+		System.out.println("Deleting all users");
 		int numRowsDeleted = userDAO.deleteAll();
 		System.out.println("Number of Deleted users: " + numRowsDeleted);
 	}
@@ -42,7 +42,7 @@ public class SeniorProjectApplication {
 	private void deleteUser(UserDAO userDAO) {
 
 		int userID = 5;
-		System.out.println("Deleting student id: " + userID);
+		System.out.println("Deleting user id: " + userID);
 		userDAO.delete(userID);
 	}
 
@@ -51,7 +51,7 @@ public class SeniorProjectApplication {
 
 		// create the user object
 		System.out.println("Creating new user object ...");
-		User tempUser = new User("Andy", "Zheng", "andyzheng7@yahoo.com", "Testing123");
+		User tempUser = new User("Andy", "Zheng", "andyzheng7@testing.com", "Testing123");
 
 		// save the user object
 		System.out.println("Saving....");
