@@ -1,10 +1,170 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
     <meta charset="UTF-8">
-    <title>Service Page</title>
+    <title>Card Search Page</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="/css/service.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
+
 <body>
-    <h1>This is where the API search bar will be. </h1>
+<div id="searchContainer">
+    <h1>Card Search</h1>
+    <input type="text" id="cardSearch" placeholder="Search cards..." />
+    <div id="searchResults"></div>
+</div>
+
+<button id="addNoteButton">Add Notes</button>
+
+<div id="notePopup" class="popup">
+    <div class="popup-content">
+        <span class="close" id="closeNotePopup">&times;</span>
+        <h2>Add/Edit Notes</h2>
+        <div id="selectedCardInfo">
+            <!-- Display selected card's info here -->
+        </div>
+        <input type="text" id="noteTitle" placeholder="Note Title" />
+        <textarea id="noteTextarea" placeholder="Add your notes here..."></textarea>
+        <button id="addCardNameButton">Add Card Name</button>
+        <button id="saveNoteButton">Save Note</button>
+    </div>
+</div>
+
+<div id="savedNotesContainer">
+    <h2>Saved Notes</h2>
+    <ul id="savedNotesList"></ul>
+</div>
+
+<script>
+$(document).ready(function () {
+    let currentCardDetails = null;
+
+    $("#cardSearch").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: "https://api.scryfall.com/cards/autocomplete?q=" + request.term,
+                dataType: "json",
+                success: function (data) {
+                    response(data.data);
+                },
+            });
+        },
+        select: function (event, ui) {
+            var selectedCard = ui.item.value;
+            fetchCardDetails(selectedCard);
+        },
+        minLength: 2,
+    });
+
+    function fetchCardDetails(cardName) {
+        $.ajax({
+            url: "https://api.scryfall.com/cards/named?fuzzy=" + cardName,
+            dataType: "json",
+            success: function (data) {
+                displayCardInfo(data);
+            },
+        });
+    }
+
+    function displayCardInfo(cardData) {
+        currentCardDetails = cardData;
+
+        var priceHTML = "";
+        if (cardData.prices && cardData.prices.usd && cardData.purchase_uris.tcgplayer) {
+            priceHTML = `<p>Price: $${cardData.prices.usd} <a href="${cardData.purchase_uris.tcgplayer}" target="_blank">Buy on TCGPlayer</a></p>`;
+        }
+
+        $("#searchResults").html(`
+            <h2>${cardData.name}</h2>
+            <img src="${cardData.image_uris.normal}" alt="${cardData.name}" style="max-width: 300px; height: auto;" />
+            ${priceHTML}
+        `);
+
+        var selectedCardInfoHTML = `
+            <h3>${cardData.name}</h3>
+            <img src="${cardData.image_uris.normal}" alt="${cardData.name}" style="max-width: 150px; height: auto;" />
+        `;
+        $("#selectedCardInfo").html(selectedCardInfoHTML);
+
+        $("#addCardNameButton").click(function () {
+            var cardName = cardData.name;
+            var noteTextarea = $("#noteTextarea");
+            noteTextarea.val(noteTextarea.val() + cardName);
+        });
+    }
+
+    // Load notes from local storage on startup
+    loadNotesFromLocalStorage();
+
+    $("#addNoteButton").click(function () {
+        $("#notePopup").css("display", "block");
+    });
+
+    $("#closeNotePopup").click(function () {
+        $("#notePopup").css("display", "none");
+    });
+
+    $("#saveNoteButton").click(function () {
+        var noteTitle = $("#noteTitle").val();
+        var noteText = $("#noteTextarea").val();
+
+        if (noteTitle && noteText) {
+            saveNoteToLocalStorage(noteTitle, noteText);
+            displaySavedNote(noteTitle, noteText);
+
+            $("#noteTitle").val("");
+            $("#noteTextarea").val("");
+            $("#notePopup").css("display", "none");
+        }
+    });
+
+    function loadNotesFromLocalStorage() {
+        var notes = JSON.parse(localStorage.getItem('savedNotes') || '[]');
+        notes.forEach(function (note) {
+            displaySavedNote(note.title, note.text);
+        });
+    }
+
+    function saveNoteToLocalStorage(title, text) {
+        var notes = JSON.parse(localStorage.getItem('savedNotes') || '[]');
+        notes.push({ title: title, text: text });
+        localStorage.setItem('savedNotes', JSON.stringify(notes));
+    }
+
+    function deleteNoteFromLocalStorage(title) {
+        var notes = JSON.parse(localStorage.getItem('savedNotes') || '[]');
+        var updatedNotes = notes.filter(function (note) {
+            return note.title !== title;
+        });
+        localStorage.setItem('savedNotes', JSON.stringify(updatedNotes));
+    }
+
+    function displaySavedNote(title, text) {
+        var savedNoteItem = $("<li></li>").text(title);
+
+        var editButton = $("<button>Edit</button>").click(function () {
+            $("#noteTitle").val(title);
+            $("#noteTextarea").val(text);
+            $("#notePopup").css("display", "block");
+            deleteNoteFromLocalStorage(title);
+            savedNoteItem.remove();
+        });
+
+        var deleteButton = $("<button>Delete</button>").click(function () {
+            deleteNoteFromLocalStorage(title);
+            savedNoteItem.remove();
+        });
+
+        savedNoteItem.append(editButton).append(deleteButton);
+
+        $("#savedNotesList").append(savedNoteItem);
+    }
+
+});
+</script>
+
 </body>
 </html>
