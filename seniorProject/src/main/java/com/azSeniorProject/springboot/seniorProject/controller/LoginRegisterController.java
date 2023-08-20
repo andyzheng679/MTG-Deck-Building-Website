@@ -23,10 +23,9 @@ public class LoginRegisterController {
 
     // create mapping for login/main page
 
-    @GetMapping("/login")
+    @GetMapping({"/", "/login"})
     public String loginPage() {
         return "loginPage";
-
     }
     @PostMapping("/submit_login")
     public String submitLogin(@RequestParam("email") String email, @RequestParam("password") String password) {
